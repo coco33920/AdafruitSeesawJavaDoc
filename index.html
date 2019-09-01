@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="None">
+  
+  <link rel="shortcut icon" href="./img/favicon.ico">
+  <title>Home - Seesaw Java</title>
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+
+  <link rel="stylesheet" href="./css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="./css/theme_extra.css" type="text/css" />
+  <link rel="stylesheet" href="./css/highlight.css">
+  
+  <script>
+    // Current page data
+    var mkdocs_page_name = "Home";
+    var mkdocs_page_input_path = "index.md";
+    var mkdocs_page_url = "/";
+  </script>
+  
+  <script src="./js/jquery-2.1.1.min.js"></script>
+  <script src="./js/modernizr-2.8.3.min.js"></script>
+  <script type="text/javascript" src="./js/highlight.pack.js"></script> 
+  
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+      <div class="wy-side-nav-search">
+        <a href="." class="icon icon-home"> Seesaw Java</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="./search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+	<ul class="current">
+	  
+          
+            <li class="toctree-l1 current">
+		
+    <a class="current" href=".">Home</a>
+    <ul class="subnav">
+            
+    <li class="toctree-l2"><a href="#requirements">Requirements</a></li>
+    
+
+    <li class="toctree-l2"><a href="#informations">Informations</a></li>
+    
+
+    <li class="toctree-l2"><a href="#get-the-sdk">Get the SDK</a></li>
+    
+
+    <li class="toctree-l2"><a href="#basic-use">Basic Use</a></li>
+    
+
+    </ul>
+	    </li>
+          
+        </ul>
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href=".">Seesaw Java</a>
+      </nav>
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href=".">Docs</a> &raquo;</li>
+    
+      
+    
+    <li>Home</li>
+    <li class="wy-breadcrumbs-aside">
+      
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main">
+            <div class="section">
+              
+                <h2 id="requirements">Requirements</h2>
+<p>In order to use the SDK you need to install <a href="https://pi4j.org">Pi4j on your Raspberry</a>.
+<br>
+Once you installed pi4j you can go further in this documentation.
+<br></p>
+<h2 id="informations">Informations</h2>
+<p>Source code is available in the <a href="https://github.com/coco33920/AdafruitSeesawSDK">Github</a> repo with examples.
+The javadoc will be generated and uploaded here : <a href="https://javadoc.nwa2coco.fr/adafruitsdk">JavaDoc</a></p>
+<h2 id="get-the-sdk">Get the SDK</h2>
+<p>The SDK is available on jitpack, so add the jitpack repository in you maven repositories.</p>
+<pre><code class="maven">        &lt;repository&gt;
+            &lt;id&gt;jitpack&lt;/id&gt;
+            &lt;name&gt;Jitpack&lt;/name&gt;
+            &lt;url&gt;https://jitpack.io&lt;/url&gt;
+        &lt;/repository&gt;
+</code></pre>
+
+<p>Go to <a href="https://jitpack.io/#coco33920/AdafruitSeesawJava">the jitpack page</a> and check for the latest release or commit tag and add the dependency.</p>
+<pre><code class="maven">    &lt;dependency&gt;
+        &lt;groupId&gt;com.github.coco33920&lt;/groupId&gt;
+        &lt;artifactId&gt;AdafruitSeesawJava&lt;/artifactId&gt;
+        &lt;version&gt;Tag&lt;/version&gt;
+    &lt;/dependency&gt;
+</code></pre>
+
+<h2 id="basic-use">Basic Use</h2>
+<p>As a simple test and first step with the SDK you can recreate the BlinkExamples in the examples/gpio package.
+First, let's instantiate a Seesaw object :</p>
+<pre><code class="java">    Seesaw seesaw = new Seesaw(I2CBus.BUS_1);
+</code></pre>
+
+<p>The first parameter of the constructor is the bus on which your device is connected, i use the first bus, but put in here the bus you use.
+You will need to init the device, call the method init() from the Seesaw object</p>
+<pre><code class="java">    seesaw.init();
+</code></pre>
+
+<p>These firsts two lines are the same every times.
+After, you need an object to control the GPIOs of the Seesaw</p>
+<pre><code class="java">    GPIOModule gpio = new seesaw.getGpioController();
+</code></pre>
+
+<p>you can also create a GPIOModule object with the seesaw :</p>
+<pre><code class="java">    GPIOModule gpio = new GPIOModule(seesaw);
+</code></pre>
+
+<p>After, set the pin you want to use, like the pin <strong>15</strong> to OUTPUT like this :</p>
+<pre><code class="java">    gpio.setMode(Modes.OUTPUT,Pins.GPIO_15);
+</code></pre>
+
+<p>The Pins class is an enum to wrap all of the differents context for the pins (GPIO, ADC, PWM, etc.) you could use just "15" but i recommend to use the enum.
+You can now make the LED blink with the setHigh(int) et setLow(int) methods of the GPIOModule :</p>
+<pre><code class="java">    gpio.setHigh(GPIO_15);
+    while (true) {
+        Thread.sleep(1000);
+        gpio.setLow(GPIO_15);
+        Thread.sleep(1000);
+        gpio.setHigh(GPIO_15);
+    }
+</code></pre>
+
+<p>The speed of the blinking can be adjusted with the sleep calls.
+Deeper explainations are in the corresponding pages.<br>
+If you have any questions contact me via email (<em>contact@nwa2coco.fr</em>)<br>
+Feel free to contribute or improve things on the github page</p>
+              
+            </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+    
+  </div>
+
+  Built with <a href="http://www.mkdocs.org">MkDocs</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+	  
+        </div>
+      </div>
+
+    </section>
+    
+  </div>
+
+  <div class="rst-versions" role="note" style="cursor: pointer">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      
+      
+      
+    </span>
+</div>
+    <script src="./js/theme.js"></script>
+
+</body>
+</html>
+
+<!--
+MkDocs version : 0.16.3
+Build Date UTC : 2019-09-01 20:52:58
+-->

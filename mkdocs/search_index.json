@@ -1,0 +1,29 @@
+{
+    "docs": [
+        {
+            "location": "/",
+            "text": "Requirements\n\n\nIn order to use the SDK you need to install \nPi4j on your Raspberry\n.\n\n\nOnce you installed pi4j you can go further in this documentation.\n\n\n\nInformations\n\n\nSource code is available in the \nGithub\n repo with examples.\nThe javadoc will be generated and uploaded here : \nJavaDoc\n\n\nGet the SDK\n\n\nThe SDK is available on jitpack, so add the jitpack repository in you maven repositories.\n\n\n        <repository>\n            <id>jitpack</id>\n            <name>Jitpack</name>\n            <url>https://jitpack.io</url>\n        </repository>\n\n\n\n\nGo to \nthe jitpack page\n and check for the latest release or commit tag and add the dependency.\n\n\n    <dependency>\n        <groupId>com.github.coco33920</groupId>\n        <artifactId>AdafruitSeesawJava</artifactId>\n        <version>Tag</version>\n    </dependency>\n\n\n\n\nBasic Use\n\n\nAs a simple test and first step with the SDK you can recreate the BlinkExamples in the examples/gpio package.\nFirst, let's instantiate a Seesaw object :\n\n\n    Seesaw seesaw = new Seesaw(I2CBus.BUS_1);\n\n\n\n\nThe first parameter of the constructor is the bus on which your device is connected, i use the first bus, but put in here the bus you use.\nYou will need to init the device, call the method init() from the Seesaw object\n\n\n    seesaw.init();\n\n\n\n\nThese firsts two lines are the same every times.\nAfter, you need an object to control the GPIOs of the Seesaw\n\n\n    GPIOModule gpio = new seesaw.getGpioController();\n\n\n\n\nyou can also create a GPIOModule object with the seesaw :\n\n\n    GPIOModule gpio = new GPIOModule(seesaw);\n\n\n\n\nAfter, set the pin you want to use, like the pin \n15\n to OUTPUT like this :\n\n\n    gpio.setMode(Modes.OUTPUT,Pins.GPIO_15);\n\n\n\n\nThe Pins class is an enum to wrap all of the differents context for the pins (GPIO, ADC, PWM, etc.) you could use just \"15\" but i recommend to use the enum.\nYou can now make the LED blink with the setHigh(int) et setLow(int) methods of the GPIOModule :\n\n\n    gpio.setHigh(GPIO_15);\n    while (true) {\n        Thread.sleep(1000);\n        gpio.setLow(GPIO_15);\n        Thread.sleep(1000);\n        gpio.setHigh(GPIO_15);\n    }\n\n\n\n\nThe speed of the blinking can be adjusted with the sleep calls.\nDeeper explainations are in the corresponding pages.\n\nIf you have any questions contact me via email (\ncontact@nwa2coco.fr\n)\n\nFeel free to contribute or improve things on the github page",
+            "title": "Home"
+        },
+        {
+            "location": "/#requirements",
+            "text": "In order to use the SDK you need to install  Pi4j on your Raspberry . \nOnce you installed pi4j you can go further in this documentation.",
+            "title": "Requirements"
+        },
+        {
+            "location": "/#informations",
+            "text": "Source code is available in the  Github  repo with examples.\nThe javadoc will be generated and uploaded here :  JavaDoc",
+            "title": "Informations"
+        },
+        {
+            "location": "/#get-the-sdk",
+            "text": "The SDK is available on jitpack, so add the jitpack repository in you maven repositories.          <repository>\n            <id>jitpack</id>\n            <name>Jitpack</name>\n            <url>https://jitpack.io</url>\n        </repository>  Go to  the jitpack page  and check for the latest release or commit tag and add the dependency.      <dependency>\n        <groupId>com.github.coco33920</groupId>\n        <artifactId>AdafruitSeesawJava</artifactId>\n        <version>Tag</version>\n    </dependency>",
+            "title": "Get the SDK"
+        },
+        {
+            "location": "/#basic-use",
+            "text": "As a simple test and first step with the SDK you can recreate the BlinkExamples in the examples/gpio package.\nFirst, let's instantiate a Seesaw object :      Seesaw seesaw = new Seesaw(I2CBus.BUS_1);  The first parameter of the constructor is the bus on which your device is connected, i use the first bus, but put in here the bus you use.\nYou will need to init the device, call the method init() from the Seesaw object      seesaw.init();  These firsts two lines are the same every times.\nAfter, you need an object to control the GPIOs of the Seesaw      GPIOModule gpio = new seesaw.getGpioController();  you can also create a GPIOModule object with the seesaw :      GPIOModule gpio = new GPIOModule(seesaw);  After, set the pin you want to use, like the pin  15  to OUTPUT like this :      gpio.setMode(Modes.OUTPUT,Pins.GPIO_15);  The Pins class is an enum to wrap all of the differents context for the pins (GPIO, ADC, PWM, etc.) you could use just \"15\" but i recommend to use the enum.\nYou can now make the LED blink with the setHigh(int) et setLow(int) methods of the GPIOModule :      gpio.setHigh(GPIO_15);\n    while (true) {\n        Thread.sleep(1000);\n        gpio.setLow(GPIO_15);\n        Thread.sleep(1000);\n        gpio.setHigh(GPIO_15);\n    }  The speed of the blinking can be adjusted with the sleep calls.\nDeeper explainations are in the corresponding pages. \nIf you have any questions contact me via email ( contact@nwa2coco.fr ) \nFeel free to contribute or improve things on the github page",
+            "title": "Basic Use"
+        }
+    ]
+}
