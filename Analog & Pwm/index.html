@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  
+  <link rel="shortcut icon" href="../img/favicon.ico">
+  <title>Analog & Pwm - Seesaw Java</title>
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+
+  <link rel="stylesheet" href="../css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../css/theme_extra.css" type="text/css" />
+  <link rel="stylesheet" href="../css/highlight.css">
+  
+  <script>
+    // Current page data
+    var mkdocs_page_name = "Analog & Pwm";
+    var mkdocs_page_input_path = "Analog & Pwm.md";
+    var mkdocs_page_url = "/Analog & Pwm/";
+  </script>
+  
+  <script src="../js/jquery-2.1.1.min.js"></script>
+  <script src="../js/modernizr-2.8.3.min.js"></script>
+  <script type="text/javascript" src="../js/highlight.pack.js"></script> 
+  
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+      <div class="wy-side-nav-search">
+        <a href=".." class="icon icon-home"> Seesaw Java</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+	<ul class="current">
+	  
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="..">Home</a>
+	    </li>
+          
+            <li class="toctree-l1 current">
+		
+    <a class="current" href="./">Analog & Pwm</a>
+    <ul class="subnav">
+            
+    <li class="toctree-l2"><a href="#read">Read</a></li>
+    
+
+    <li class="toctree-l2"><a href="#write">Write</a></li>
+    
+
+    <li class="toctree-l2"><a href="#write-and-read">Write and Read</a></li>
+    
+
+    </ul>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../gpio/">Gpio</a>
+	    </li>
+          
+        </ul>
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="..">Seesaw Java</a>
+      </nav>
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="..">Docs</a> &raquo;</li>
+    
+      
+    
+    <li>Analog & Pwm</li>
+    <li class="wy-breadcrumbs-aside">
+      
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main">
+            <div class="section">
+              
+                <h2 id="read">Read</h2>
+<p>The analog read method is provided by the AnalogModule, with only one method <strong>readChannel(int channel)</strong> use the Pins class to use a more user-friendly way to use the channel.
+<br>The method give you a number between 0 and 1023 (10 bits ADC)</p>
+<pre><code class="java">    AnalogModule analog = new AnalogModule(seesaw); //Instance of a new AnalogModule with the Seesaw device 
+    while(true){
+        System.out.println(analog.readChannel(ADC0)); //Print the value of the channel ADC0 (pin 2)
+        Thread.sleep(10); //Minimum 1 milliseconds between the multiple reads
+    }
+</code></pre>
+
+<h2 id="write">Write</h2>
+<p>The analog write method is provided by the PwmModule, with only one method <strong>writePwm(int pin,byte value)</strong> use the Pins class and one of the PWM channels (Pins.PWM1/2/3/4)
+<br>You must provide a byte as the value, between 0 and 255 - unsigned - and -128 and 127 (signed)<br>
+<br>To test the example you will need a LED with the anode connected to the PWM pin 5 (PWM2) through a 330Ω resistance and the cathode connected to the ground</p>
+<pre><code class="java">    //The PWM Wave Example - Full code at https://github.com/coco33920/AdafruitSeesawJava
+    PwmModule pwmModule = new PwmModule(seesaw); //Instance of a new PwmModule with the Seesaw device
+    byte i = 0; //Start value
+    byte pas = 1; //Change the showed value every step
+
+    while(true){
+        pwmModule.writePwm(PWM2, i); //Show the value on the LED connected to the pin 5
+        i+=pas; //increment the value for the next step
+
+        if(i==(byte) 255){
+            pas = -1 //Reverse
+        } //Do not go further 255 or you will get an IOException
+
+        if(i==(byte)0){
+            pas = 1; //Reverse
+        } //Do not go bellow 0 or you will get an IOException
+
+        Thread.sleep(10) //10ms is a good delay
+    }
+</code></pre>
+
+<h2 id="write-and-read">Write and Read</h2>
+<p>You can connect an analog input and an analog output to control for example the brightness of an LED
+<br>To test the example you will need a LED with the anode connected to the PWM pin 5 (PWM2) through a 330Ω resistance and the cathode connected to the ground, and a potentiometer connnected to your Seesaw with the middle electrode connected to the Analog Input 2 (pin 2, Pins.ADC0)</p>
+<pre><code class="java">    //The AnalogReadPwmOutputExample - Full code at https://github.com/coco33920/AdafruitSeesawJava
+
+    //Create an instance of the two needed modules
+    PwmModule pwmModule = new PwmModule(s);
+    AnalogModule analog = new AnalogModule(s);
+
+    //Write the LED to 0 to make sure you will not go further 255
+    pwmModule.writePwm(PWM2, (byte) 0);
+
+    while (true) {
+        int i = analog.readChannel(ADC0); //Read the value of the potentiometer, from 0 to 1023
+        int output = Math.round(i * 0.2490234375f); //Map the value of the potentiometer from the range 0-1023 to 0-255 with the basic formula
+
+        if (output &lt; 1) {
+            output = 0;
+        }
+        if (output &gt; 255) {
+            output = 255;
+        }
+
+        pwmModule.writePwm(PWM2, (byte) output); //Write the value
+        Thread.sleep(1);//Sleep 1ms is good for a real-time feeling
+    }
+</code></pre>
+              
+            </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../gpio/" class="btn btn-neutral float-right" title="Gpio">Next <span class="icon icon-circle-arrow-right"></span></a>
+      
+      
+        <a href=".." class="btn btn-neutral" title="Home"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+    
+  </div>
+
+  Built with <a href="http://www.mkdocs.org">MkDocs</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+	  
+        </div>
+      </div>
+
+    </section>
+    
+  </div>
+
+  <div class="rst-versions" role="note" style="cursor: pointer">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      
+      
+        <span><a href=".." style="color: #fcfcfc;">&laquo; Previous</a></span>
+      
+      
+        <span style="margin-left: 15px"><a href="../gpio/" style="color: #fcfcfc">Next &raquo;</a></span>
+      
+    </span>
+</div>
+    <script src="../js/theme.js"></script>
+
+</body>
+</html>

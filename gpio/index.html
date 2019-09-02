@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  
+  <link rel="shortcut icon" href="../img/favicon.ico">
+  <title>Gpio - Seesaw Java</title>
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+
+  <link rel="stylesheet" href="../css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../css/theme_extra.css" type="text/css" />
+  <link rel="stylesheet" href="../css/highlight.css">
+  
+  <script>
+    // Current page data
+    var mkdocs_page_name = "Gpio";
+    var mkdocs_page_input_path = "gpio.md";
+    var mkdocs_page_url = "/gpio/";
+  </script>
+  
+  <script src="../js/jquery-2.1.1.min.js"></script>
+  <script src="../js/modernizr-2.8.3.min.js"></script>
+  <script type="text/javascript" src="../js/highlight.pack.js"></script> 
+  
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+      <div class="wy-side-nav-search">
+        <a href=".." class="icon icon-home"> Seesaw Java</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+	<ul class="current">
+	  
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="..">Home</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../Analog & Pwm/">Analog & Pwm</a>
+	    </li>
+          
+            <li class="toctree-l1 current">
+		
+    <a class="current" href="./">Gpio</a>
+    <ul class="subnav">
+            
+    <li class="toctree-l2"><a href="#modes">Modes</a></li>
+    
+
+    <li class="toctree-l2"><a href="#events">Events</a></li>
+    
+
+    <li class="toctree-l2"><a href="#output">Output</a></li>
+    
+
+    <li class="toctree-l2"><a href="#read">Read</a></li>
+    
+
+    </ul>
+	    </li>
+          
+        </ul>
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="..">Seesaw Java</a>
+      </nav>
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="..">Docs</a> &raquo;</li>
+    
+      
+    
+    <li>Gpio</li>
+    <li class="wy-breadcrumbs-aside">
+      
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main">
+            <div class="section">
+              
+                <h2 id="modes">Modes</h2>
+<p>I recommend you to import static all the Pins class, in the document i will assume it's done</p>
+<pre><code class="java">    gpio.setMode(Modes mode, int... pins);
+</code></pre>
+
+<p>The first parameter is the mode, Modes is an enum, you can use Modes.OUTPUT, Modes.INPUT, and the two inputs modes INPUT_PULLUP and INPUT_PULLDOWN
+<br>To set the GPIO9 and GPIO15 to <strong>INPUT_PULLUP</strong> and GPIO10 to <strong>OUTPUT</strong> :</p>
+<pre><code class="java">    gpio.setMode(Modes.INPUT_PULLUP, GPIO_9, GPIO_15);
+    gpio.setMode(Modes.OUTPUT, GPIO_10);
+</code></pre>
+
+<h2 id="events">Events</h2>
+<p>By default the events are triggered by the Interrupt pin, so unless you want to try for fun i recommand to not change the default event mode
+To register a listener use the <strong>registerListener()</strong> method :</p>
+<pre><code class="java">    gpio.registerListener(int pin, PinListenerDigital listener)
+</code></pre>
+
+<p>In example, register a listener to pin 15 to set high the pin 10 and the pin 9 to set low pin 10 (with java 8 lambda expressions).</p>
+<pre><code class="java">    gpio.registerListener(GPIO_15, event -&gt; gpio.setHigh(GPIO_10));
+    gpio.registerListener(GPIO_9, event -&gt; gpio.setLow(GPIO_10));
+</code></pre>
+
+<p>And if you wire two buttons to the pins 15 and 9 and one led to the pin 10 of the Seesaw you will be able to turn the LED OFF and ON !
+If you really want to change the event mode to the previous manager (by checking the state of the pin) you can by calling the setEventMode() method</p>
+<pre><code class="java">    gpio.setEventMode(EventMode.THREAD_TEST_MODE);
+</code></pre>
+
+<h2 id="output">Output</h2>
+<p>Two methods are defined to perform this task, the <strong>setHigh(int pin)</strong> and <strong>setLow(int pin)</strong> methods. <br>
+Just wire a LED on the pin 15 of the Seesaw to see this !</p>
+<pre><code class="java">    //You need to register the pin 15 as output :
+    gpio.setMode(Modes.OUTPUT, GPIO_15);
+    //After just use the methods :
+    gpio.setHigh(GPIO_15);
+    Thread.sleep(1000)
+    gpio.setLow(GPIO_15);
+</code></pre>
+
+<p>You can also activate and deactivate the triggering of the interrupt pin if the state of a pin changed (it's used to track the events on the default event manager)</p>
+<pre><code class="java">    gpio.setMode(Modes.OUTPUT, GPIO_15);
+
+    gpio.activateInterrupt(GPIO_15);
+    gpio.disableInterrupt(GPIO_15);
+    //Full example with the isInterrupted() function bellow
+</code></pre>
+
+<h2 id="read">Read</h2>
+<p>You can read the state of a pin in the GPIO by using the <strong>readGpio(int pin)</strong> method.</p>
+<pre><code class="java">    gpio.setMode(Modes.OUTPUT, GPIO_15);
+    gpio.setLow(GPIO_15);
+
+    gpio.readGpio(GPIO_15); //Should be false
+    gpio.setHigh(GPIO_15);
+    gpio.readGpio(GPIO_15); //Should be true
+</code></pre>
+
+<p>You can also get if a pin state changed with <strong>isInterrupted(int pin)</strong> if you activated the triggering of the interrupt pin on the pin</p>
+<pre><code class="java">    gpio.setMode(Modes.OUTPUT, GPIO_15);
+    gpio.activateInterrupt(GPIO_15);
+    gpio.isInterrupted(GPIO_15) //Should be false
+    gpio.setHigh(GPIO_15);
+    gpio.isInterrupted(GPIO_15) //Should be true
+</code></pre>
+              
+            </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+      
+        <a href="../Analog & Pwm/" class="btn btn-neutral" title="Analog & Pwm"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+    
+  </div>
+
+  Built with <a href="http://www.mkdocs.org">MkDocs</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+	  
+        </div>
+      </div>
+
+    </section>
+    
+  </div>
+
+  <div class="rst-versions" role="note" style="cursor: pointer">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      
+      
+        <span><a href="../Analog & Pwm/" style="color: #fcfcfc;">&laquo; Previous</a></span>
+      
+      
+    </span>
+</div>
+    <script src="../js/theme.js"></script>
+
+</body>
+</html>
